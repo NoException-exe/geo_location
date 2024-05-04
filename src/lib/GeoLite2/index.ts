@@ -17,13 +17,16 @@ export class GeoLocationLite {
       return { success: false };
     }
 
+    const subdivisions = results.subdivisions;
+    const firstSubdivision = subdivisions && subdivisions[0];
+
     return {
       success: true,
       ip: this.ip,
       country_code: results?.country?.iso_code,
       country_name: results?.country?.names?.en,
-      region_code: results?.subdivisions[0]?.iso_code,
-      region_name: results?.subdivisions[0]?.names?.en,
+      region_code: firstSubdivision?.iso_code,
+      region_name: firstSubdivision?.names?.en,
       city: results?.city?.names?.en,
       zip_code: results?.postal?.code,
       time_zone: results?.location?.time_zone,
