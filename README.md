@@ -8,7 +8,7 @@ This API was developed in TypeScript using the Fastify framework to provide loca
 - **Dev Command**: `npm run dev`
 - **Build Command**: `npm run build`
 - **Start Command**: `npm run start`
-- 
+  
 ### Database
 
 To ensure the accuracy of location information, this API uses the GeoLite2-City.mmdb database. Make sure to regularly update this file to get the latest data.
