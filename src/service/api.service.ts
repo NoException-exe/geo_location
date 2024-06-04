@@ -1,4 +1,4 @@
-import { GeoLocationLite } from "../lib/GeoLite2/index";
+import { GeoLocationLite } from "../../lib/GeoLite2/index";
 import { ApiBody } from "src/type/api.type";
 
 export const ApiService = () => {

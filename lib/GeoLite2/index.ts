@@ -1,5 +1,6 @@
 import * as fs from "fs/promises";
 import * as path from "path";
+
 import { CityResponse, Reader } from "maxmind";
 import { ApiResponse } from "src/type/api.type";
 
@@ -23,15 +24,15 @@ export class GeoLocationLite {
     return {
       success: true,
       ip: this.ip,
-      country_code: results?.country?.iso_code,
-      country_name: results?.country?.names?.en,
-      region_code: firstSubdivision?.iso_code,
-      region_name: firstSubdivision?.names?.en,
-      city: results?.city?.names?.en,
-      zip_code: results?.postal?.code,
-      time_zone: results?.location?.time_zone,
-      latitude: results?.location?.latitude,
-      longitude: results?.location?.longitude,
+      country_code: results?.country?.iso_code || null,
+      country_name: results?.country?.names?.en || null,
+      region_code: firstSubdivision?.iso_code || null,
+      region_name: firstSubdivision?.names?.en || null,
+      city: results?.city?.names?.en || null,
+      zip_code: results?.postal?.code || null,
+      time_zone: results?.location?.time_zone || null,
+      latitude: results?.location?.latitude || null,
+      longitude: results?.location?.longitude || null,
     };
   }
 }
