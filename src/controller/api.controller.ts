@@ -1,26 +1,50 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { isIPv4, isIPv6 } from "net";
+import { plainToClass } from "class-transformer";
+import { validate } from "class-validator";
+import { ApiBodyDto, ApiResponseDto } from "../dtos/api.dto";
 import { ApiService } from "../service/api.service";
-import { ApiBody } from "src/type/api.type";
-import { BadRequestError } from "../throw/api.throw";
 
-export const ApiController = () => {
-  return {
-    handle: async (request: FastifyRequest, reply: FastifyReply) => {
-      const { ip } = request.body as ApiBody;
+export class ApiController {
+  /**
+   * This method is the main handler for the API route.
+   * It receives a request and a reply from Fastify.
+   *
+   * It first converts the request body to a strongly typed object.
+   * Then it validates the object.
+   * If the object is not valid, it returns a 400 status and the errors.
+   *
+   * If the object is valid, it calls the ApiService to execute the request.
+   * Then it sends the response.
+   *
+   * @param {FastifyRequest} request - The request from Fastify.
+   * @param {FastifyReply} reply - The reply from Fastify.
+   * @returns {Promise<ApiResponseDto>}
+   */
+  public async handle(
+    request: FastifyRequest,
+    reply: FastifyReply
+  ): Promise<ApiResponseDto> {
+    // Convert the request body to a strongly typed object.
+    const data: ApiBodyDto = plainToClass(ApiBodyDto, request.body);
 
-      if (!ip) {
-        throw new BadRequestError("Ip field is required");
-      }
+    // Validate the object.
+    const errors = await validate(data);
 
-      if (!isIPv4(ip) && !isIPv6(ip)) {
-        throw new BadRequestError("Invalid ip address");
-      }
+    // If the object is not valid, return a 400 status and the errors.
+    if (errors.length > 0) {
+      return reply.status(400).send({ success: false, errors });
+    }
 
-      const apiService = ApiService();
-      const response = await apiService.execute({ ip });
+    // Get the IP from the data.
+    const { ip } = data;
 
-      return reply.status(200).send(response);
-    },
-  };
-};
+    // Create a new instance of ApiService.
+    const apiService = new ApiService();
+
+    // Execute the request.
+    const response = await apiService.execute({ ip });
+
+    // Return the response.
+    return reply.send(response);
+  }
+}

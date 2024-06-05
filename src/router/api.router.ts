@@ -15,7 +15,7 @@ const Routers = (
     method: "POST",
     url: "/json",
     handler: async (request: FastifyRequest, reply: FastifyReply) => {
-      return await ApiController().handle(request, reply);
+      return await new ApiController().handle(request, reply);
     },
   });
 

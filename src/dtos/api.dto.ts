@@ -1,4 +1,6 @@
-export type ApiResponse = {
+import { IsIP, IsNotEmpty } from "class-validator";
+
+export type ApiResponseDto = {
   success: boolean;
   ip?: string;
   country_code?: string;
@@ -13,6 +15,8 @@ export type ApiResponse = {
   longitude?: number;
 };
 
-export type ApiBody = {
+export class ApiBodyDto {
+  @IsNotEmpty()
+  @IsIP()
   ip: string;
-};
+}

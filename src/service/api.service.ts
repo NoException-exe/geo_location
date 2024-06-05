@@ -1,14 +1,21 @@
 import { GeoLocationLite } from "../../lib/GeoLite2/index";
-import { ApiBody } from "src/type/api.type";
+import { ApiBodyDto, ApiResponseDto } from "../dtos/api.dto";
 
-export const ApiService = () => {
-  return {
-    execute: async ({ ip }: ApiBody) => {
-      const location = new GeoLocationLite(ip);
+export class ApiService {
+  /**
+   * Executes the API request.
+   *
+   * @param {ApiBodyDto} params - The parameters for the API request.
+   * @returns {Promise<ApiResponseDto>} - A promise that resolves to the API response.
+   */
+  public async execute({ ip }: ApiBodyDto): Promise<ApiResponseDto> {
+    // Create a new instance of GeoLocationLite.
+    const location = new GeoLocationLite(ip);
 
-      const data = await location.getIp();
+    // Get the IP information.
+    const data = await location.getIp();
 
-      return data;
-    },
-  };
-};
+    // Return the data.
+    return data;
+  }
+}
